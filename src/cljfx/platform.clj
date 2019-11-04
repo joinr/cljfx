@@ -1,6 +1,11 @@
 (ns cljfx.platform
   "Part of a public API"
+  (:require [cljfx.version :as v])
   (:import [javafx.application Platform]))
+
+(defonce force-toolkit-init
+  (case v/version
+    :eight (javafx.embed.swing.JFXPanel.)))
 
 (defmacro run-later [& body]
   `(let [*result# (promise)]
@@ -26,8 +31,10 @@
      (run-later ~@body)))
 
 (defn initialize []
-  (try
-    (Platform/startup #(Platform/setImplicitExit false))
-    ::initialized
-    (catch IllegalStateException _
-      ::already-initialized)))
+  (case v/version
+    :eight (on-fx-thread (Platform/setImplicitExit false))
+    (try
+      (.startup Platform #(Platform/setImplicitExit false))
+      ::initialized
+      (catch IllegalStateException _
+        ::already-initialized))))

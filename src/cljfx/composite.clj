@@ -7,6 +7,7 @@
             [cljfx.lifecycle :as lifecycle]
             [cljfx.mutator :as mutator]
             [cljfx.prop :as prop]
+            [cljfx.version :as v]
             [clojure.string :as str]))
 
 (defn- desc->props-desc [desc]
@@ -153,6 +154,11 @@
                                  mutator)
                               ~@args)]
                   [k prop]))))))
+
+(defmacro modern-props [type-expr & kvs]
+  (case v/version
+    :eight {}
+    `(props ~type-expr ~@kvs)))
 
 (defmacro describe [type-expr & kvs]
   (let [kv-map (apply hash-map kvs)]

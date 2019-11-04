@@ -32,5 +32,5 @@
       (updateItem [item empty]
         (let [^TreeCell this this
               props @*props]
-          (proxy-super updateItem item empty)
+          (proxy-super updateItem item ^Boolean (boolean empty))
           (vreset! *props (f props this item empty)))))))

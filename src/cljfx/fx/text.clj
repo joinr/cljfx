@@ -35,12 +35,13 @@
       :line-spacing [:setter lifecycle/scalar :coerce double :default 0.0]
       :font-smoothing-type [:setter lifecycle/scalar
                             :coerce (coerce/enum FontSmoothingType)
-                            :default :gray]
-      :selection-start [:setter lifecycle/scalar :coerce int :default -1]
-      :selection-end [:setter lifecycle/scalar :coerce int :default -1]
-      :selection-fill [:setter lifecycle/scalar :coerce coerce/paint :default :white]
-      :caret-position [:setter lifecycle/scalar :coerce int :default -1]
-      :caret-bias [:setter lifecycle/scalar :default true])))
+                            :default :gray])
+      (composite/modern-props Text
+          :selection-start [:setter lifecycle/scalar :coerce int :default -1]
+          :selection-end [:setter lifecycle/scalar :coerce int :default -1]
+          :selection-fill [:setter lifecycle/scalar :coerce coerce/paint :default :white]
+          :caret-position [:setter lifecycle/scalar :coerce int :default -1]
+          :caret-bias [:setter lifecycle/scalar :default true])))
 
 (def lifecycle
   (composite/describe Text

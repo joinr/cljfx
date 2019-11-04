@@ -10,6 +10,7 @@
 (set! *warn-on-reflection* true)
 
 (def props
+  (merge 
   (composite/props Node
     :accessible-help [:setter lifecycle/scalar]
     :accessible-role-description [:setter lifecycle/scalar]
@@ -84,5 +85,6 @@
     :translate-x [:setter lifecycle/scalar :coerce double :default 0]
     :translate-y [:setter lifecycle/scalar :coerce double :default 0]
     :translate-z [:setter lifecycle/scalar :coerce double :default 0]
-    :view-order [:setter lifecycle/scalar :coerce double :default 0]
-    :visible [:setter lifecycle/scalar :default true]))
+    :visible [:setter lifecycle/scalar :default true])
+  (composite/modern-props Node
+    :view-order [:setter lifecycle/scalar :coerce double :default 0])))

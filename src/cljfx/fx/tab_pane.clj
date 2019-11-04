@@ -3,10 +3,21 @@
   (:require [cljfx.composite :as composite]
             [cljfx.lifecycle :as lifecycle]
             [cljfx.coerce :as coerce]
-            [cljfx.fx.control :as fx.control])
-  (:import [javafx.scene.control TabPane TabPane$TabClosingPolicy TabPane$TabDragPolicy]
+            [cljfx.fx.control :as fx.control]
+            [cljfx.version :as v])
+  (:import [javafx.scene.control TabPane]
            [javafx.geometry Side]
            [javafx.scene AccessibleRole]))
+
+(def drag-props
+  (when (not= v/version :eight)
+    (do (import '[javafx.scene.control TabPane$TabClosingPolicy TabPane$TabDragPolicy])
+        (composite/modern-props TabPane 
+           :tab-closing-policy [:setter lifecycle/scalar
+                                :coerce (coerce/enum TabPane$TabClosingPolicy)
+                                :default :selected-tab]
+           :tab-drag-policy [:setter lifecycle/scalar
+                             :coerce (coerce/enum TabPane$TabDragPolicy) :default :fixed]))))
 
 (set! *warn-on-reflection* true)
 
@@ -21,16 +32,13 @@
       ;; definitions
       :rotate-graphic [:setter lifecycle/scalar :default false]
       :side [:setter lifecycle/scalar :coerce (coerce/enum Side) :default :top]
-      :tab-closing-policy [:setter lifecycle/scalar
-                           :coerce (coerce/enum TabPane$TabClosingPolicy)
-                           :default :selected-tab]
-      :tab-drag-policy [:setter lifecycle/scalar
-                        :coerce (coerce/enum TabPane$TabDragPolicy) :default :fixed]
+
       :tab-max-height [:setter lifecycle/scalar :coerce double :default Double/MAX_VALUE]
       :tab-max-width [:setter lifecycle/scalar :coerce double :default Double/MAX_VALUE]
       :tab-min-height [:setter lifecycle/scalar :coerce double :default 0.0]
       :tab-min-width [:setter lifecycle/scalar :coerce double :default 0.0]
-      :tabs [:list lifecycle/dynamics])))
+      :tabs [:list lifecycle/dynamics])
+    drag-props))
 
 (def lifecycle
   (composite/describe TabPane

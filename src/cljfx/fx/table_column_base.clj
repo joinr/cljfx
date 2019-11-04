@@ -8,6 +8,7 @@
 (set! *warn-on-reflection* true)
 
 (def props
+  (merge 
   (composite/props TableColumnBase
     :columns [:list lifecycle/dynamics]
     :comparator [:setter lifecycle/scalar :default TableColumnBase/DEFAULT_COMPARATOR]
@@ -18,7 +19,6 @@
     :max-width [:setter lifecycle/scalar :coerce double :default 5000]
     :min-width [:setter lifecycle/scalar :coerce double :default 10]
     :pref-width [:setter lifecycle/scalar :coerce double :default 80]
-    :reorderable [:setter lifecycle/scalar :default true]
     :resizable [:setter lifecycle/scalar :default true]
     :sort-node [:setter lifecycle/dynamic]
     :sortable [:setter lifecycle/scalar :default true]
@@ -26,4 +26,6 @@
     :style-class [:list lifecycle/scalar :coerce coerce/style-class]
     :text [:setter lifecycle/scalar :default ""]
     :user-data [:setter lifecycle/scalar]
-    :visible [:setter lifecycle/scalar :default true]))
+    :visible [:setter lifecycle/scalar :default true])
+  (composite/modern-props TableColumnBase
+    :reorderable [:setter lifecycle/scalar :default true])))
